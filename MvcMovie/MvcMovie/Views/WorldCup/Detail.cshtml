@@ -1,0 +1,18 @@
+﻿@{
+    ViewData["Title"] = "World Cup";
+}
+<div class="text-center">
+    <h1 class="display-4">World Cup Qata 2022</h1>
+</div>
+
+<div class="text-center d-flex justify-content-center align-items-center" style="color: #ffffff; background-color: #5e0420;">
+    <div class="m-3">
+        <img src=@ViewData["img1"] alt=@ViewData["name1"] height="100px"/>
+        <h3>@ViewData["name1"]</h3>
+    </div>
+    <div class="m-1"><h2>@ViewData["end"]</h2></div>
+    <div class="m-3">
+        <img src=@ViewData["img2"] alt=@ViewData["name2"] height="100px"/>
+        <h3>@ViewData["name2"]</h3>
+    </div>
+</div>
