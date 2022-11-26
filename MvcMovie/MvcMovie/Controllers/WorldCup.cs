@@ -33,19 +33,6 @@ namespace MvcMovie.Controllers
                 ViewData["img2"] = "https://s1.vnecdn.net/vnexpress/restruct/i/v681/flag/My.png";
                 ViewData["end"] = "0 - 0";
             }
-            //switch (id)
-            //{
-            //    case 1:
-                   
-            //        break;
-
-            //    case 2:
-                    
-            //        break;
-            //    default:
-                   
-            //        break;
-            //}
 
             return View();
         }
