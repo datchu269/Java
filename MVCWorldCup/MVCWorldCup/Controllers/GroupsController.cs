@@ -58,7 +58,7 @@ namespace MVCWorldCup.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,GroupName")] Group @group)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
                 _context.Add(@group);
                 await _context.SaveChangesAsync();

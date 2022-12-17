@@ -40,7 +40,7 @@
                 @Html.DisplayNameFor(model => model.Point)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Group)
+                @Html.DisplayNameFor(model => model.GroupName)
             </th>
             <th></th>
         </tr>
@@ -76,7 +76,7 @@
                 @Html.DisplayFor(modelItem => item.Point)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Group.Id)
+                @Html.DisplayFor(modelItem => item.GroupName)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |

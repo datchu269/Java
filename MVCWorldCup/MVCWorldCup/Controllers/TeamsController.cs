@@ -13,17 +13,20 @@ namespace MVCWorldCup.Controllers
     public class TeamsController : Controller
     {
         private readonly MVCWorldCupContext _context;
+        private readonly MVCWorldCupContext _contextGroup;
 
-        public TeamsController(MVCWorldCupContext context)
+        public TeamsController(MVCWorldCupContext context, MVCWorldCupContext contextGroup)
         {
             _context = context;
+            _contextGroup = contextGroup;
         }
 
         // GET: Teams
         public async Task<IActionResult> Index()
         {
-            var mVCWorldCupContext = _context.Team.Include(t => t.Group);
-            return View(await mVCWorldCupContext.ToListAsync());
+            return _context.Team != null ?
+                        View(await _context.Team.ToListAsync()) :
+                        Problem("Entity set 'MVCWorldCupContext.Team'  is null.");
         }
 
         // GET: Teams/Details/5
@@ -35,7 +38,6 @@ namespace MVCWorldCup.Controllers
             }
 
             var team = await _context.Team
-                .Include(t => t.Group)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (team == null)
             {
@@ -48,7 +50,6 @@ namespace MVCWorldCup.Controllers
         // GET: Teams/Create
         public IActionResult Create()
         {
-            ViewData["GroupId"] = new SelectList(_context.Group, "Id", "Id");
             return View();
         }
 
@@ -57,18 +58,17 @@ namespace MVCWorldCup.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,TeamName,Win,Draw,Lose,Goal,GoalsConceded,Difference,Point,GroupId")] Team team)
+        public async Task<IActionResult> Create([Bind("Id,TeamName,TotalMatches,Win,Draw,Lose,Goal,GoalsConceded,Difference,Point,GroupName")] Team team)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
                 team.TotalMatches = team.Win + team.Draw + team.Lose;
-                team.TotalMatches = team.Win + team.Draw + team.Lose;
-                team.TotalMatches = team.Win + team.Draw + team.Lose;
+                team.Difference = team.Goal - team.GoalsConceded;
+                team.Point = team.Win * 3 + team.Draw * 1;
                 _context.Add(team);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["GroupId"] = new SelectList(_context.Group, "Id", "Id", team.GroupId);
             return View(team);
         }
 
@@ -85,7 +85,6 @@ namespace MVCWorldCup.Controllers
             {
                 return NotFound();
             }
-            ViewData["GroupId"] = new SelectList(_context.Group, "Id", "Id", team.GroupId);
             return View(team);
         }
 
@@ -94,7 +93,7 @@ namespace MVCWorldCup.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,TeamName,TotalMatches,Win,Draw,Lose,Goal,GoalsConceded,Difference,Point,GroupId")] Team team)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,TeamName,TotalMatches,Win,Draw,Lose,Goal,GoalsConceded,Difference,Point,GroupName")] Team team)
         {
             if (id != team.Id)
             {
@@ -105,6 +104,9 @@ namespace MVCWorldCup.Controllers
             {
                 try
                 {
+                    team.TotalMatches = team.Win + team.Draw + team.Lose;
+                    team.Difference = team.Goal - team.GoalsConceded;
+                    team.Point = team.Win * 3 + team.Draw * 1;
                     _context.Update(team);
                     await _context.SaveChangesAsync();
                 }
@@ -121,7 +123,6 @@ namespace MVCWorldCup.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["GroupId"] = new SelectList(_context.Group, "Id", "Id", team.GroupId);
             return View(team);
         }
 
@@ -134,7 +135,6 @@ namespace MVCWorldCup.Controllers
             }
 
             var team = await _context.Team
-                .Include(t => t.Group)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (team == null)
             {

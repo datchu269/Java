@@ -62,6 +62,10 @@ namespace MVCWorldCup.Migrations
                     b.Property<int>("GroupId")
                         .HasColumnType("int");
 
+                    b.Property<string>("GroupName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int>("Lose")
                         .HasColumnType("int");
 
