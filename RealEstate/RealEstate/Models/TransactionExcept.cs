@@ -1,0 +1,28 @@
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace RealEstate.Models
+{
+    public class TransactionExcept
+    {
+        public int Id { get; set; }
+
+        [Required, DataType(DataType.DateTime)]
+        public DateTime Time { get; set; }
+
+        [Required]
+        public double ServicePackage { get; set; } // gói dịch vụ 20$/tuần - 70$/1tháng
+
+        [Required]
+        public int TransactionId { get; set; }
+        public Transaction Transaction { get; set; }
+
+        [Required]
+        public int UserId { get; set; }
+        public User User { get; set; }
+
+        [Required]
+        public int ProductId { get; set; }
+        public Product Product { get; set; }
+
+    }
+}
