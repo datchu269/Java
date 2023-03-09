@@ -1,14 +1,33 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using AspNetCoreHero.ToastNotification;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using RealEstate.Data;
 using RealEstate.Models;
+using System.Text.Encodings.Web;
+using System.Text.Unicode;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<RealEstateContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("RealEstateContext") ?? throw new InvalidOperationException("Connection string 'RealEstateContext' not found.")));
 
 // Add services to the container.
-builder.Services.AddControllersWithViews();
+builder.Services.AddControllersWithViews().AddRazorRuntimeCompilation();
+builder.Services.AddNotyf(config => { config.DurationInSeconds = 3; config.IsDismissable = true; config.Position = NotyfPosition.TopRight; });
+builder.Services.AddSingleton<HtmlEncoder>(HtmlEncoder.Create(allowedRanges: new[] { UnicodeRanges.All }));
+builder.Services.AddSession();
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+    .AddCookie(p =>
+    {
+        p.Cookie.Name = "UserLoginCookie";
+        p.ExpireTimeSpan = TimeSpan.FromDays(1);
+        //p.LoginPath = "/dang-nhap.html";
+        //p.LogoutPath = "/dang-xuat/html";
+        p.AccessDeniedPath = "/not-found.html";
+    });
+
+
+
 
 var app = builder.Build();
 
@@ -33,10 +52,20 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+app.UseSession();
+app.UseAuthentication();
 app.UseAuthorization();
 
-app.MapControllerRoute(
-    name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+app.UseEndpoints(endpoints =>
+{
+    endpoints.MapControllerRoute(
+            name: "areas",
+            pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}"
+          );
+    endpoints.MapControllerRoute(
+            name: "default",
+            pattern: "{controller=Home}/{action=Index}/{id?}");
+
+});
 
 app.Run();

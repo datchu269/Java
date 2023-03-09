@@ -1,0 +1,188 @@
+﻿@using Microsoft.AspNetCore.Mvc.Rendering
+@model RealEstate.Models.RealEstateViewModel.ProductDetailView
+
+@{
+    ViewData["Title"] = "Manager Product";
+    User user = ViewBag.user;
+    var status = 1;
+
+}
+@*
+<input type="email" asp-for="UserName" placeholder="Địa chỉ Email">
+<span asp-validation-for="UserName" class="text-danger"></span>*@
+
+@*<span>@Model.TransactionExcept.Day</span>*@
+
+<section class="post-section space_top">
+    @await Html.PartialAsync("_MenuPartialView", user,  new ViewDataDictionary(ViewData) { { "status", status } })
+    <div class="post-content">
+        <form asp-action="Create" method="post" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="post-content-item">
+                <h3>Thông tin cơ bản</h3>
+                <div class="post-content-swich">
+                    <input id="sell" type="radio" asp-for="@Model.Product.Directory" name="pentSell" value="0" checked>
+                    <label for="sell">Bán</label>
+                    <input id="pent" type="radio" asp-for="@Model.Product.Directory" name="pentSell" value="1">
+                    <label for="pent">Cho thuê</label>
+                </div>
+                <div class="post-con-row">
+                    <div class="post-content-select">
+                        <h3 class="post-con-titlte">Địa chỉ</h3>
+                        <input type="text" asp-for="@Model.Product.AddressProduct" placeholder="VD: Hà Nội">
+                        <span asp-validation-for="@Model.Product.AddressProduct" class="text-danger"></span>
+                    </div>
+                    <div class="post-content-input">
+                        <h3 class="post-con-titlte">Giá: (đ)</h3>
+                        <input type="text" asp-for="@Model.Product.Price" placeholder="VD: 2000000">
+                        <span asp-validation-for="@Model.Product.Price" class="text-danger"></span>
+
+                    </div>
+                </div>
+                <div class="post-con-row">
+                    <div class="post-content-input">
+                        <h3 class="post-con-titlte">Diện tích: (m2)</h3>
+                        <input type="text" asp-for="@Model.Product.Area" placeholder="VD: 500">
+                        <span asp-validation-for="@Model.Product.Area" class="text-danger"></span>
+
+                    </div>
+                    <div class="post-content-input">
+                        <h3 class="post-con-titlte">Hướng nhà</h3>
+                        <input type="text" asp-for="@Model.Product.HomeOrientation" placeholder="VD: Đông bắc">
+                        <span asp-validation-for="@Model.Product.HomeOrientation" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="post-con-row">
+                    <div class="post-content-input">
+                        <h3 class="post-con-titlte">Số phòng ngủ</h3>
+                        <input type="text" asp-for="@Model.Product.Bedroom" placeholder="VD: 3">
+                        <span asp-validation-for="@Model.Product.Bedroom" class="text-danger"></span>
+                    </div>
+                    <div class="post-content-input">
+                        <h3 class="post-con-titlte">Số phòng WC</h3>
+                        <input type="text" asp-for="@Model.Product.Restrooms" placeholder="VD: 2">
+                        <span asp-validation-for="@Model.Product.Restrooms" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+            <!--  -->
+            <div class="post-content-item">
+                <h3>Thông tin bài viết</h3>
+                <div class="post-content-area">
+                    <h3 class="post-con-titlte">Tiêu đề</h3>
+                    <textarea id="NameProduct" rows="2" asp-for="@Model.Product.NameProduct" placeholder="VD: Bán nhà riêng 50m2 chính chủ tại Cầu Giấy"
+                              style="height:64px;"></textarea>
+                    <span asp-validation-for="@Model.Product.NameProduct" class="text-danger"></span>
+
+                </div>
+                <div class="post-content-area">
+                    <h3 class="post-con-titlte">Mô tả</h3>
+                    <textarea id="descContent" style="height: 160px;" asp-for="@Model.Product.Description"
+                              placeholder="Nhập mô tả chung về bất động sản của bạn. Ví dụ: Khu nhà có vị trí thuận lợi, gần công viên, gần trường học ... "
+                              type="text"></textarea>
+                    <span asp-validation-for="@Model.Product.Description" class="text-danger"></span>
+
+                </div>
+            </div>
+            <div class="post-content-item">
+                <h3>Hình ảnh</h3>
+                <div class="btn-upload_img">
+                    <label for="listImgUp">
+                        <span><i class="fa fa-upload" aria-hidden="true"></i></span>
+                        <h4>Bấm vào đây để chọn ảnh tải lên</h4>
+                    </label>
+                    <input type="file" asp-for="@Model.files" id="listImgUp" multiple>
+                </div>
+                <div id="box-img-up"></div>
+            </div>
+            <div class="post-content-item">
+                <h3>Cấu hình đăng</h3>
+                <h3 class="post-con-titlte">Chọn loại tin đăng</h3>
+                <div class="post-type-box">
+                    <input type="radio" id="typePost1" asp-for="@Model.TransactionExcept.ServicePackage" value="thuong" checked>
+                    <label class="post-type-item" for="typePost1">
+                        <h4>Tin thường</h4>
+                        <span>2.182đ/ngày</span>
+                        <div class="post-type-item-con">
+                            <img src="~/img/svg/type-1.svg" alt="">
+                            <p>Đứng cuối kết quả tìm kiếm</p>
+                        </div>
+                        <div class="post-type-item-con">
+                            <img src="~/img/type-1.png" alt="">
+                            <p>Tin đăng cỡ nhỏ</p>
+                        </div>
+                        <div class="post-type-item-con">
+                            <button type="button">Chọn</button>
+                        </div>
+                    </label>
+                    <input type="radio" id="typePost2" asp-for="@Model.TransactionExcept.ServicePackage" value="bac">
+                    <label class="post-type-item" for="typePost2">
+                        <h4 style="color: #009BA1;">VIP Bạc</h4>
+                        <span>49.090đ/ngày</span>
+                        <div class="post-type-item-con">
+                            <img src="~/img/svg/type-2.svg" alt="">
+                            <p>Hiển thị dưới vip vàng</p>
+                        </div>
+                        <div class="post-type-item-con">
+                            <img src="~/img/type-2.png" alt="">
+                            <p>Tin đăng cỡ trung bình</p>
+                        </div>
+                        <div class="post-type-item-con">
+                            <button type="button">Chọn</button>
+                        </div>
+                    </label>
+                    <input type="radio"  id="typePost3" asp-for="@Model.TransactionExcept.ServicePackage" value="vang" >
+                    <label class="post-type-item" for="typePost3">
+                        <h4 style="color: #E9B149;">VIP Vàng</h4>
+                        <span>104.545đ/ngày</span>
+                        <div class="post-type-item-con">
+                            <img src="~/img/svg/type-3.svg" alt="">
+                            <p>Hiển thị dưới vip kim cương</p>
+                        </div>
+                        <div class="post-type-item-con">
+                            <img src="~/img/type-3.png" alt="">
+                            <p>Tin đăng cỡ lớn</p>
+                        </div>
+                        <div class="post-type-item-con">
+                            <button type="button">Chọn</button>
+                        </div>
+                    </label>
+                    <input type="radio" id="typePost4" asp-for="@Model.TransactionExcept.ServicePackage" value="kimCuong">
+                    <label class="post-type-item" for="typePost4">
+                        <h4 style="color: #E04537;">VIP Kim Cương</h4>
+                        <span>268.184đ/ngày</span>
+                        <div class="post-type-item-con">
+                            <img src="~/img/svg/type-4.svg" alt="">
+                            <p>Hiển thị đầu kết quả tìm kiếm</p>
+                        </div>
+                        <div class="post-type-item-con">
+                            <img src="~/img/type-4.png" alt="">
+                            <p>Tin đăng cỡ siêu lớn</p>
+                        </div>
+                        <div class="post-type-item-con">
+                            <button type="button">Chọn</button>
+                        </div>
+                    </label>
+                </div>
+                <h3 class="post-con-titlte">Số ngày</h3>
+                <div class="post-day-box">
+                    <input type="radio" id="postDay1" checked asp-for="@Model.TransactionExcept.Day" value="10">
+                    <label for="postDay1">
+                        10 ngày
+                    </label>
+                    <input type="radio"  id="postDay2" asp-for="@Model.TransactionExcept.Day" value="15">
+                    <label for="postDay2">
+                        15 ngày
+                    </label>
+                    <input type="radio"  id="postDay3" asp-for="@Model.TransactionExcept.Day" value="30">
+                    <label for="postDay3">
+                        30 ngày
+                    </label>
+                </div>
+            </div>
+            <div class="post-content-item post-total-payment">
+            </div>
+        </form>
+    </div>
+</section>
+

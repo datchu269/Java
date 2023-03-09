@@ -1,0 +1,58 @@
+﻿@using Microsoft.AspNetCore.Mvc.Rendering
+@model RealEstate.Models.RealEstateViewModel.ProductAllView
+
+@{
+    ViewData["Title"] = "Manager Product";
+    User user = Model.User;
+    var status = 0;
+}
+
+<section class="post-section space_top">
+    @await Html.PartialAsync("_MenuPartialView", user, new ViewDataDictionary(ViewData) { { "status", status } })
+    <div class="post-content list-post-container">
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+            <h3 class="list-post-titlte">Danh sách tin đăng</h3>
+            <a class="btn btn-success" asp-controller="ManagerProduct" asp-action="Create"><span style="font-size: 17px;">Đăng bài</span></a>
+        </div>
+        <div class="list-post-box">
+            <div class="list-post-box-head">
+                <div class="list-post-head-title" style="width: 8%;">
+                    STT
+                </div>
+                <div class="list-post-head-title" style="width: 60%;">
+                    Tiêu đề
+                </div>
+                <div class="list-post-head-title" style="width: 14%;">
+                    Ngày đăng
+                </div>
+                <div class="list-post-head-title" style="width: 18%;">
+                    Action
+                </div>
+            </div>
+            <div class="list-post-box-body">
+                @foreach (var item in Model.Products)
+                {
+                    var imgURL = item.ProductImages.FirstOrDefault().NameImage;
+                    var date = item.TransactionExcepts.FirstOrDefault().Time.ToString("dd-MM-yyyy hh:mm tt");
+
+                    <div class="list-post-box-body-item">
+                        <div class="list-post-stt" style="width: 8%;">1</div>
+                        <div class="list-post-ti" style="width: 60%;">
+                            <img src="~/img/@imgURL" alt="">
+                            <p>
+                                @item.NameProduct
+                            </p>
+                        </div>
+                        <div class="list-post-date" style="width: 14%;">@date</div>
+                        <div class="list-post-action" style="width: 18%;">
+                            <a href="#">Thêm ảnh</a>
+                            <a href="#">Sửa</a>
+                            <a href="#">Xóa</a>
+                        </div>
+                    </div>
+                }
+                
+            </div>
+        </div>
+    </div>
+</section>

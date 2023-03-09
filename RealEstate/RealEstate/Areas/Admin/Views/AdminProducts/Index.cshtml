@@ -1,0 +1,183 @@
+﻿@using PagedList.Core.Mvc
+@model PagedList.Core.IPagedList<RealEstate.Models.Product>
+
+@{
+    int CurrentPage = ViewBag.CurrentPage;
+    ViewData["Title"] = "Đânh sách khách hàng " + CurrentPage;
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                NameProduct
+            </th>
+            <th>
+                Price
+            </th>
+            <th>
+                AddressProduct
+            </th>
+            <th>
+                Directory
+            </th>
+            <th>
+                Area
+            </th>
+            <th>
+                Bedroom
+            </th>
+            <th>
+                Restrooms
+            </th>
+            <th>
+                HomeOrientation
+            </th>
+            <th>
+                Description
+            </th>
+            <th>
+                Category
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.NameProduct)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Price)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.AddressProduct)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Directory)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Area)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Bedroom)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Restrooms)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.HomeOrientation)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Description)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Category.NameCategory)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+
+<div aria-label="Page navigation example">
+    <ul class="pagination">
+        <pager class="pager-container" list="@Model" asp-area="Admin" asp-controller="AdminProducts" asp-action="Index" />
+    </ul>
+</div>
+
+@section Scripts {
+    <script>
+        $('#modal-container').on('show.bs.modal', function(event) {
+            var button = $(event.relatedTarget); // Button that triggered the modal
+            var url = button.attr("href");
+            var modal = $(this);
+
+            modal.find('.modal-content').load(url);
+        });
+    </script>
+
+    <script>
+        $('#modal-container').on('show.bs.modal', function(event) {
+            var button = $(event.relatedTarget); // Button that triggered the modal
+            var url = button.attr("href");
+            var modal = $(this);
+
+            modal.find('.modal-content').load(url);
+        });
+    </script>
+
+    <script>
+        $(document).ready(function () {
+            function GetUrlParameter(sParam) {
+                var sPageUrl = window.location.search.substring(1);
+                var sURLVariables = sPageUrl.split('&');
+                for (var i = 0; i < sURLVariables.length; i++) {
+                    var sParameterName = sURLVariables[i].split('=');
+                    if (sParameterName[0] == sParam) {
+                        return sParameterName[i];
+                    }
+                }
+            }
+
+            jQuery("#txtCatID").change(function () {
+                var catID = jQuery(this).children(":selected").attr("value");
+                catID = parseFloat(catID);
+                $("#txtCatID option").removeAttr('selected');
+                $("#txtCatID > [value=" + catID + "]").attr("selected", "true");
+
+                var idactive = $("#txtCatID option:selected").attr('id');
+                if (idactive === undefined) idactive = GetUrlParameter("Active");
+
+                $.ajax({
+                    url: '/Admin/AdminProducts/Filter',
+                    dataType: 'json',
+                    type: "GET",
+                    data: {
+                        Active: idactive,
+                        CatID: catID
+                    },
+                    async: true,
+                    success: function (results) {
+                        if (results.status == "success") {
+                            window.location.href = results.redirectUrl;
+                        }
+                    },
+                    error: function (xhr) {
+                        alert('error');
+                    }
+                });
+            });
+
+            $("#keyword").keyup(function () {
+                var strkeyword = $('#keyword').val();
+                $.ajax({
+                    url: 'Admin/Search/FindProduct',
+                    dataType: 'json',
+                    type: "POST",
+                    data: { keyword: strkeyword },
+                    async: true,
+                    success: function (results) {
+                        $("#loader").hide();
+                        $("#records_table").html("");
+                        $("#records_table").html(results);
+                    },
+                    error: function (xhr) {
+                        alert('error');
+                    }
+                });
+            });
+        });
+    </script>
+}

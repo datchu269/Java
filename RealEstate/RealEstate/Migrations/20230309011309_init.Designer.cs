@@ -12,8 +12,8 @@ using RealEstate.Data;
 namespace RealEstate.Migrations
 {
     [DbContext(typeof(RealEstateContext))]
-    [Migration("20230226063107_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20230309011309_init")]
+    partial class init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -33,6 +33,16 @@ namespace RealEstate.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("FullName")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
                     b.Property<string>("Password")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -40,11 +50,6 @@ namespace RealEstate.Migrations
                     b.Property<string>("Status")
                         .IsRequired()
                         .HasColumnType("nvarchar(1)");
-
-                    b.Property<string>("Username")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
 
                     b.HasKey("Id");
 
@@ -183,11 +188,15 @@ namespace RealEstate.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<int>("Day")
+                        .HasColumnType("int");
+
                     b.Property<int>("ProductId")
                         .HasColumnType("int");
 
-                    b.Property<double>("ServicePackage")
-                        .HasColumnType("float");
+                    b.Property<string>("ServicePackage")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("Time")
                         .HasColumnType("datetime2");
@@ -221,7 +230,6 @@ namespace RealEstate.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Address")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<double>("Balance")
@@ -275,7 +283,7 @@ namespace RealEstate.Migrations
             modelBuilder.Entity("RealEstate.Models.Transaction", b =>
                 {
                     b.HasOne("RealEstate.Models.User", "User")
-                        .WithMany()
+                        .WithMany("Transactions")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -298,7 +306,7 @@ namespace RealEstate.Migrations
                         .IsRequired();
 
                     b.HasOne("RealEstate.Models.User", "User")
-                        .WithMany()
+                        .WithMany("TransactionExcepts")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -313,12 +321,17 @@ namespace RealEstate.Migrations
             modelBuilder.Entity("RealEstate.Models.User", b =>
                 {
                     b.HasOne("RealEstate.Models.Account", "Account")
-                        .WithMany()
+                        .WithMany("Users")
                         .HasForeignKey("AccountId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Account");
+                });
+
+            modelBuilder.Entity("RealEstate.Models.Account", b =>
+                {
+                    b.Navigation("Users");
                 });
 
             modelBuilder.Entity("RealEstate.Models.Category", b =>
@@ -331,6 +344,13 @@ namespace RealEstate.Migrations
                     b.Navigation("ProductImages");
 
                     b.Navigation("TransactionExcepts");
+                });
+
+            modelBuilder.Entity("RealEstate.Models.User", b =>
+                {
+                    b.Navigation("TransactionExcepts");
+
+                    b.Navigation("Transactions");
                 });
 #pragma warning restore 612, 618
         }

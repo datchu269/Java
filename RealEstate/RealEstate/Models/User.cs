@@ -17,7 +17,7 @@ namespace RealEstate.Models
         [RegularExpression(@"^\\(?(\[0-9\]{3})\\)?\[-.●\]?(\[0-9\]{3})\[-.●\]?(\[0-9\]{4})$", ErrorMessage = "The PhoneNumber field is not a valid phone number")]
         public string Phone { get; set; }
 
-        public string Address { get; set; }
+        public string? Address { get; set; }
 
         [Required]
         public double Balance { get; set; }
@@ -28,8 +28,8 @@ namespace RealEstate.Models
         public int AccountId { get; set; }
         public Account Account { get; set; }
 
-        //public ICollection<Transaction>? Transactions { get; set; }
-        //public ICollection<TransactionExcept>? TransactionExcepts { get; set; }
+        public ICollection<Transaction>? Transactions { get; set; }
+        public ICollection<TransactionExcept>? TransactionExcepts { get; set; }
 
     }
 }

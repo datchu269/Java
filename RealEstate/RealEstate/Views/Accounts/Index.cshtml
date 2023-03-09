@@ -1,47 +1,28 @@
-﻿@model IEnumerable<RealEstate.Models.Account>
+﻿
+@model RealEstate.Models.RealEstateViewModel.LoginView
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Login";
 }
 
-<h1>Index</h1>
+    <section class="login-regis" style="padding-top: 105px;">
+        <div class="container-login">
+            <h2>Đăng nhập</h2>
+            <form asp-action="Login" method="post">
+                <div class="form-login-group">
+                    <label >Email</label>
+                    <input type="email" asp-for="UserName" placeholder="Địa chỉ Email">
+                    <span asp-validation-for="UserName" class="text-danger"></span>
+                </div>
+                <div class="form-login-group">
+                    <label>Mật khẩu</label>
+                    <input type="password" asp-for="Password" placeholder="Mật khẩu">
+                     <span asp-validation-for="Password" class="text-danger"></span>
+                </div>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Username)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Password)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Status)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Username)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Password)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Status)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+                <div class="form-login-submit">
+                    <button type="submit">Xác nhận</button>
+                </div>
+            </form>
+        </div>
+    </section>

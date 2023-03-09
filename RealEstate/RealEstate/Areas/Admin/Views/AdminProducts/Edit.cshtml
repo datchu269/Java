@@ -1,0 +1,77 @@
+﻿@model RealEstate.Models.Product
+
+@{
+    ViewData["Title"] = "Edit";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h1>Edit</h1>
+
+<h4>Product</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" />
+            <div class="form-group">
+                <label asp-for="NameProduct" class="control-label"></label>
+                <input asp-for="NameProduct" class="form-control" />
+                <span asp-validation-for="NameProduct" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Price" class="control-label"></label>
+                <input asp-for="Price" class="form-control" />
+                <span asp-validation-for="Price" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="AddressProduct" class="control-label"></label>
+                <input asp-for="AddressProduct" class="form-control" />
+                <span asp-validation-for="AddressProduct" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Directory" class="control-label"></label>
+                <input asp-for="Directory" class="form-control" />
+                <span asp-validation-for="Directory" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Area" class="control-label"></label>
+                <input asp-for="Area" class="form-control" />
+                <span asp-validation-for="Area" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Bedroom" class="control-label"></label>
+                <input asp-for="Bedroom" class="form-control" />
+                <span asp-validation-for="Bedroom" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Restrooms" class="control-label"></label>
+                <input asp-for="Restrooms" class="form-control" />
+                <span asp-validation-for="Restrooms" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="HomeOrientation" class="control-label"></label>
+                <input asp-for="HomeOrientation" class="form-control" />
+                <span asp-validation-for="HomeOrientation" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Description" class="control-label"></label>
+                <input asp-for="Description" class="form-control" />
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CategoryId" class="control-label"></label>
+                <select asp-for="CategoryId" class="form-control" asp-items="ViewBag.CategoryId"></select>
+                <span asp-validation-for="CategoryId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+

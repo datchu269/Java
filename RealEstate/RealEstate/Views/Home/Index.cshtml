@@ -244,92 +244,6 @@
 					</div>
 
 
-					<script>
-						$('.group_block .action_pro').click(function () {
-							$('.advance_option').toggleClass('runFunction offFunction').slideToggle();
-						});
-						$(function () {
-
-							var $cat = $("#category1"),
-								$subcat = $(".subcat");
-
-							var optgroups = {};
-
-							$subcat.each(function (i, v) {
-								var $e = $(v);
-								var _id = $e.attr("id");
-								optgroups[_id] = {};
-								$e.find("optgroup").each(function () {
-									var _r = $(this).data("rel");
-									$(this).find("option").addClass("is-dyn");
-									optgroups[_id][_r] = $(this).html();
-								});
-							});
-							$subcat.find("optgroup").remove();
-
-							var _lastRel;
-							$cat.on("change", function () {
-								var _rel = $(this).val();
-								if (_lastRel === _rel) return true;
-								_lastRel = _rel;
-								$subcat.find("option").attr("style", "");
-								$subcat.val("");
-								$subcat.find(".is-dyn").remove();
-								if (!_rel) return $subcat.prop("disabled", true);
-								$subcat.each(function () {
-									var $el = $(this);
-									var _id = $el.attr("id");
-									$el.append(optgroups[_id][_rel]);
-								});
-								$subcat.prop("disabled", false);
-							});
-
-						});
-						$('.delta_search').click(function (e) {
-
-							var a1 = $('.advance_normal option:selected').attr('data-link'),
-								b1 = $('.advance_normal .tdq_input').val(),
-								a2 = $('.advance_1 option:selected').attr('data-link'),
-								b2 = $('.advance_2 option:selected').attr('data-childlink'),
-								c2 = $('.advance_3 option:selected').attr('data-link'),
-								d2 = $('.advance_dientich option:selected').attr('data-link'),
-								and = '%20AND%20',
-								or = '%20OR%20';
-
-							if ($('.advance_option').hasClass('runFunction')) {
-
-								if (b1 != '' && typeof a2 != "undefined" && typeof b2 === "undefined" && typeof d2 != "undefined") {
-									window.location.href = '/search?query=collections:' + a2 + '' + and + '' + b1 + '' + and + 'tags:(' + a1 + '' + and + '' + d2 + ')';
-								} else if (b1 != '' && typeof a2 != "undefined" && typeof b2 != "undefined" && typeof c2 === "undefined" && typeof d2 != "undefined") {
-									window.location.href = '/search?query=collections:' + a2 + '' + and + 'vendor:(' + b2 + ')' + and + '' + b1 + '' + and + 'tags:(' + a1 + '' + and + '' + d2 + ')';
-								} else if (b1 != '' && typeof a2 != "undefined" && typeof b2 != "undefined" && typeof c2 != "undefined" && typeof d2 != "undefined") {
-									window.location.href = '/search?query=collections:' + a2 + '' + and + 'vendor:(' + b2 + ')' + and + 'product_type:(' + c2 + ')' + and + '' + b1 + '' + and + 'tags:(' + a1 + '' + and + '' + d2 + ')';
-								} else if (b1 != '' && typeof a2 != "undefined" && typeof b2 != "undefined" && typeof c2 != "undefined" && typeof d2 === "undefined") {
-									window.location.href = '/search?query=collections:' + a2 + '' + and + 'vendor:(' + b2 + ')' + and + 'product_type:(' + c2 + ')' + and + '' + b1 + '' + and + 'tags:(' + a1 + ')';
-								} else if (b1 === '' && typeof a2 != "undefined" && typeof b2 != "undefined" && typeof c2 != "undefined" && typeof d2 === "undefined") {
-									window.location.href = '/search?query=collections:' + a2 + '' + and + 'vendor:(' + b2 + ')' + and + 'product_type:(' + c2 + ')' + and + 'tags:(' + a1 + ')';
-								} else if (b1 != '' && typeof a2 === "undefined" && typeof b2 === "undefined" && typeof c2 === "undefined" && typeof d2 != "undefined") {
-									window.location.href = '/search?query=' + b1 + '' + and + 'tags:(' + a1 + '' + and + '' + d2 + ')';
-								} else if (b1 === '' && typeof a2 === "undefined" && typeof b2 === "undefined" && typeof c2 === "undefined" && typeof d2 != "undefined") {
-									window.location.href = '/search?query=tags:(' + a1 + '' + and + '' + d2 + ')';
-								} else if (b1 === '' && typeof a2 != "undefined" && typeof b2 != "undefined" && typeof c2 != "undefined" && typeof d2 != "undefined") {
-									window.location.href = '/search?query=collections:' + a2 + '' + and + 'vendor:(' + b2 + ')' + and + 'product_type:(' + c2 + ')' + and + 'tags:(' + a1 + '' + and + '' + d2 + ')';
-								} else if (typeof a2 === "undefined" && typeof b2 === "undefined" && b1 != '' && typeof d2 === "undefined") {
-									alert('Vui lòng chọn');
-								} else {
-									alert('Nếu bạn chọn tính năng nâng cao - Vui lòng chọn Tỉnh thành/phố, quận/huyện, kiểu dự án...');
-								}
-							} else {
-
-								if (b1 != '') {
-									window.location.href = '/search?query=' + b1 + '' + and + 'tags:(' + a1 + ')';
-								} else {
-									window.location.href = '/search?query=tags:(' + a1 + ')';
-								}
-
-							}
-						});
-					</script>
 				</div>
 				<div class="collections_link">
 					<p>Tìm nhanh theo kiểu dáng</p>
@@ -480,7 +394,7 @@
 															<div class="product-box product-item-main product-item-compare">
 															<div class="product-thumbnail">
 																<a class="image_thumb p_img"
-																   href="https://delta-platinum.mysapo.net/cho-thue-can-ho-biet-thu-cao-cap"
+																   asp-controller="Product" asp-action="Detail" asp-route-id="@item.Id"
 																   title="@item.NameProduct">
 																		<img src="~/img/@imgURL"
 																		 alt="@item.NameProduct">
@@ -509,7 +423,7 @@
 																	}
 
 
-																<a href="https://delta-platinum.mysapo.net/cho-thue-can-ho-biet-thu-cao-cap"
+																	<a asp-controller="Product" asp-action="Detail" asp-route-id="@item.Id"
 																   title="Dự án hỗ trợ xem ảnh 360 độ" class="degrees">
 																	<img src="~/img/360-degrees.png"
 																		 data-lazyload="//bizweb.dktcdn.net/100/336/794/themes/692935/assets/360-degrees.png?1664094337757"
@@ -519,7 +433,7 @@
 															<div class="product-info product-bottom mh">
 
 																<h3 class="product-name">
-																	<a href="https://delta-platinum.mysapo.net/cho-thue-can-ho-biet-thu-cao-cap"
+																		<a asp-controller="Product" asp-action="Detail" asp-route-id="@item.Id"
 																	   title="@item.NameProduct">@item.NameProduct</a>
 																</h3>
 																<div class="tag_mix section">

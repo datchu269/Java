@@ -1,0 +1,70 @@
+﻿
+@model RealEstate.Models.Account
+@{
+    ViewData["Title"] = "Home Page";
+    var user = Model.Users.FirstOrDefault();
+}
+
+
+
+<section class="profile">
+    <div class="profile-container">
+        <div class="profile-img">
+            <img src="~/img/@(user.Image == null ? "Avatar-Default.jpg" : user.Image)" alt="">
+            <div>
+                <p>@user.FullName</p>
+                <span>@user.Email</span>
+            </div>
+        </div>
+        <div class="profile-description">
+            <div class="profile-description-item">
+                <label for="">Tên đầy đủ:</label>
+                <input type="text" value="@user.FullName">
+            </div>
+            <div class="profile-description-item">
+                <label for="">Email:</label>
+                <input type="text" value="@user.Email">
+            </div>
+            <div class="profile-description-item">
+                <label for="">Địa chỉ:</label>
+                <input type="text" value="@user.Address">
+            </div>
+            <div class="profile-description-item">
+                <label for="">Số điện thoại:</label>
+                <input type="text" value="@user.Phone">
+            </div>
+            <div class="profile-description-item">
+                <label for="">Số dư:</label>
+                <input type="text" value="@user.Balance">
+            </div>
+            <div class="profile-description-btn">
+                <button>Đăng bán</button>
+                <button>Mua gói</button>
+            </div>
+        </div>
+        <div class="profile-conect">
+            <div class="profile-conect-btn">
+                <button>+ Connect</button>
+            </div>
+            <div class="profile-conect-des">
+                <div>
+                    <p>Facebook</p>
+                    <span>userman12</span>
+                </div>
+                <div>
+                    <p>Instagram</p>
+                    <span>userman12</span>
+                </div>
+                <div>
+                    <p>Twitter</p>
+                    <span>userman12</span>
+                </div>
+                <div>
+                    <p>Pinterest</p>
+                    <span>userman12</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+

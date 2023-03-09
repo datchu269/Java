@@ -8,9 +8,10 @@ namespace RealEstate.Models
 
         [Required, DataType(DataType.DateTime)]
         public DateTime Time { get; set; }
+        public int Day { get; set; }
 
         [Required]
-        public double ServicePackage { get; set; } // gói dịch vụ 20$/tuần - 70$/1tháng
+        public string ServicePackage { get; set; } // gói dịch vụ 20$/tuần - 70$/1tháng
 
         [Required]
         public int TransactionId { get; set; }
@@ -18,11 +19,11 @@ namespace RealEstate.Models
 
         [Required]
         public int UserId { get; set; }
-        public User User { get; set; }
+        public User? User { get; set; }
 
         [Required]
         public int ProductId { get; set; }
-        public Product Product { get; set; }
+        public Product? Product { get; set; }
 
     }
 }
